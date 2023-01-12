@@ -15,10 +15,31 @@ function increasePayBalance() {
 
 
 
-const url = 'https://hickory-quilled-actress.glitch.me/computers';
 
-fetch(url)
-    .then((response) => {
-        console.log(response)
-      return response.json();
-    })
+
+
+//Using the async/await method
+const laptopElement = document.getElementById(laptopName);
+
+async function fetchLaptops(){
+    try{
+      const laptopResponse = await fetch("https://hickory-quilled-actress.glitch.me/computers");
+      const laptops = await laptopResponse.json();
+      return laptops;
+    }
+    catch (error)
+    {
+      console.log(error);
+    }
+}
+
+const laptops = await fetchLaptops();
+
+console.log(laptops[0].title); 
+
+const oneLaptop = laptops.filter(laptop => laptop.id === 1);
+
+
+// const newLaptopElement = document.createElement("p");
+// newLaptopElement.innerText = oneLaptop[0].title;
+// laptopElement.append(newLaptopElement);
