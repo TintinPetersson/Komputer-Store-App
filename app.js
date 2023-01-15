@@ -13,30 +13,41 @@ let loanBalance = document.querySelector("#loanBalance");
 workButton.addEventListener("click", increasePayBalance);
 bankButton.addEventListener("click", transferWorkMoneyToBank);
 loanButton.addEventListener("click", getALoan);
-repayLoanButton.addEventListener("click", repayLoan)
+repayLoanButton.addEventListener("click", repayLoan);
 
 //Functions
 function increasePayBalance() {
   payBalance.innerText = new Intl.NumberFormat("sv-SE", { style: "currency", currency: "SEK", })
     .format(parseInt(payBalance.innerText) + 100);
 }
-
 function transferWorkMoneyToBank() {
-  if(parseInt(loanBalance.innerText) === 0){
+  if(parseInt(loanBalance.innerText) === 0)
+  {
     bankBalance.innerText = new Intl.NumberFormat("sv-SE", { style: "currency", currency: "SEK",})
       .format(parseInt(payBalance.innerText) + parseInt(bankBalance.innerText));
     payBalance.innerText = 0;
   }
-  else if(parseInt(loanBalance.innerText) > 0){
-    loanBalance.innerText = parseInt(loanBalance.innerText) - (parseInt(bankBalance.innerText) * 0.1);
-  }
-}
+  else
+  {
+    const mandatoryLoanAmount = parseInt(payBalance.innerText) / 10;
 
+    bankBalance.innerText = parseInt(payBalance.innerText) + parseInt(bankBalance.innerText) - mandatoryLoanAmount;
+    loanBalance.innerText = parseInt(loanBalance.innerText) - mandatoryLoanAmount;
+
+    payBalance.innerText = 0;
+  }
+
+  if(parseInt(loanBalance.innerText) === 0)
+  loanBalance.innerText = 0;
+  document.querySelector("#hiddenLoan").setAttribute("hidden", "hidden");
+  document.querySelector("#repayLoanDiv").setAttribute("hidden", "hidden");
+
+}
 function getALoan() {
   const requestedLoanNumber = Number(window.prompt("Type a number", ""));
 
   if (parseInt(loanBalance.innerText) === 0 && requestedLoanNumber <= parseInt(bankBalance.innerText) * 2) 
-  {
+{
     loanBalance.innerText = new Intl.NumberFormat("sv-SE", {style: "currency", currency: "SEK",})
       .format(requestedLoanNumber);
 
@@ -49,12 +60,13 @@ function getALoan() {
     alert("That loan is too large!");
   }
 }
+function repayLoan(){
+  loanBalance.innerText =  new Intl.NumberFormat("sv-SE", {style: "currency", currency: "SEK",})
+  .format(parseInt(loanBalance.innerText) - parseInt(payBalance.innerText));
 
-// function repayLoan(){
+  payBalance.innerText = 0;
 
-//   loanBalance.innerText = new Intl.NumberFormat("sv-SE", { style: "currency", currency: "SEK",})
-//       .format(parseInt(loanBalance.innerText) - parseInt(payBalance.innerText));
-
-//   payBalance.innerText = parseInt(loanBalance.innerText);
-
-// }
+  if(parseInt(loanBalance.innerText) === 0)
+  document.querySelector("#hiddenLoan").setAttribute("hidden", "hidden");
+  document.querySelector("#repayLoanDiv").setAttribute("hidden", "hidden");
+}
