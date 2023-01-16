@@ -1,4 +1,4 @@
-//Query selectors
+//DOM
 const workButton = document.querySelector("#workButton");
 const bankButton = document.querySelector("#bankButton");
 const loanButton = document.querySelector("#getALoanButton");
