@@ -11,36 +11,51 @@ async function fetchLaptops() {
 const laptops = await fetchLaptops();
 
 
+//Event listener
+dropdownMenu.addEventListener("change", onDropdownChange);
 
-//DOM
-const laptopElement = document.getElementById(laptopName);
-
-dropdownMenu.addEventListener("change", onDropDownChange);
-
-const addToDropDown = (laptop) => {
+//Functions
+const addToDropdown = (laptop) => {
   const laptopElement = document.createElement("option");
   laptopElement.value = laptop.id;
   laptopElement.appendChild(document.createTextNode(laptop.title));
   dropdownMenu.appendChild(laptopElement);
 };
-
-laptops.forEach((c) => addToDropDown(c));
-
-function addToFeatureList(spec){
-  const featureElement = document.createElement("li");
-  featureElement.innerText = spec;
-  document.querySelector("#featureList").append(featureElement);
+function addSpecsToFeatureList(spec){
+  const featureListElement = document.createElement("li");
+  featureListElement.innerText = spec;
+  document.querySelector("#featureList").append(featureListElement);
 }
+function onDropdownChange() {
 
-function onDropDownChange() {
-  let value = dropdownMenu.value;
+  const value = dropdownMenu.value - 1;
+
   document.querySelector("#featureList").innerText = "";
+  document.querySelector("#laptopPrice").innerText = laptops[value].price;
+  document.querySelector("#laptopName").innerText = laptops[value].title;
+  document.querySelector("#laptopInfo").innerText = laptops[value].description;
+  laptops[value].specs.forEach(c => addSpecsToFeatureList(c));
 
-  document.querySelector("#laptopPrice").innerText = new Intl.NumberFormat("sv-SE",{style: "currency",currency: "SEK",}).format(laptops[value - 1].price);
-  laptops[value - 1].specs.forEach(c => addToFeatureList(c));
-  document.querySelector("#laptopName").innerText = laptops[value - 1].title;
-  document.querySelector("#laptopInfo").innerText = laptops[value - 1].description;
-  document.querySelector("#laptopImage").src = "https://hickory-quilled-actress.glitch.me/"+ laptops[value - 1].image;
+  //Fetch picture and change url from jpg to png, and vice versa, if needed.
+  fetch("https://hickory-quilled-actress.glitch.me/" + laptops[value].image, { method: "HEAD" })
+  .then(res => {
+    if (res.ok) 
+      document.querySelector("#laptopImage").src = "https://hickory-quilled-actress.glitch.me/"+ laptops[value].image;
+    else {
+
+      if(laptops[value].image.includes(".jpg")){
+        laptops[value].image = laptops[value].image.replace(".jpg", ".png")
+        document.querySelector("#laptopImage").src = "https://hickory-quilled-actress.glitch.me/"+ laptops[value].image;
+      }
+      else{
+        laptops[value].image.replace(".png", ".jpg")
+        document.querySelector("#laptopImage").src = "https://hickory-quilled-actress.glitch.me/"+ laptops[value].image;
+      }
+    }
+  })
+  .catch(err => console.log('Error:', err))
 }
 
-onDropDownChange();
+laptops.forEach((c) => addToDropdown(c));
+//Initialization one time in order to fill the information about a laptop. Before one is selected.
+onDropdownChange();
