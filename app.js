@@ -85,16 +85,16 @@ function repayLoan(){
   payBalance.innerText = 0;
 }
 function buyLaptop(){
-  let laptopPrice = document.querySelector("#laptopPrice").innerText.trim();
-  let laptopName = document.querySelector("#laptopName").innerText;
+  const laptopPrice = document.querySelector("#laptopPrice").innerText;
+  const laptopName = document.querySelector("#laptopName").innerText;
 
-
+  
   if(parseInt(bankBalance.innerText) >= parseInt(laptopPrice)){
 
     bankBalance.innerText = parseInt(bankBalance.innerText) - parseInt(laptopPrice);
 
-    alert("Congratulations! You succesfully bought a brand new laptop. \n\n" + laptopName + " is now yours!")
+    alert("Congratulations!\n\nYou succesfully bought a new laptop. \n\n" + laptopName + " is now yours!")
   }else{
-    alert("You cannot afford that laptop at this time.")
+    alert("You cannot afford that laptop at this time.\n\n You need: " + (parseInt(laptopPrice) - parseInt(bankBalance.innerText)) + " kr more.")
   }
 }

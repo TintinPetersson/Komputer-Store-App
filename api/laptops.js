@@ -57,5 +57,5 @@ function onDropdownChange() {
 }
 
 laptops.forEach((c) => addToDropdown(c));
-//Initialization one time in order to fill the information about a laptop. Before one is selected.
+//Initialization one time in order to fill the information about a laptop, on load. Before one is selected.
 onDropdownChange();
