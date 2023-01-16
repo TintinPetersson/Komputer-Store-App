@@ -24,9 +24,9 @@
             <div class="card-body">
               <h4 class="card-title fw-bolder">Joe Banker</h4>
               <div class="card-text pt-5 pb-5">
-                <h6>Balance: &emsp;<span id="bankBalance">0</span></h6>
+                <h6>Balance: &emsp;<span id="bankBalance">0</span><span> kr</span></h6>
                 <h6 id="hiddenLoan" hidden>
-                  Loan: &emsp;<span id="loanBalance">0</span>
+                  Loan: &emsp;<span id="loanBalance">0</span><span> kr</span>
                 </h6>
               </div>
               <div class="pb-5 pt-2">
@@ -40,7 +40,7 @@
             <div class="card-body">
               <h4 class="card-title fw-bolder">Work</h4>
               <div class="card-text pt-5 pb-5">
-                <h6>Pay: &emsp;<span id="payBalance">0</span></h6>
+                <h6>Pay: &emsp;<span id="payBalance">0</span><span> kr</span></h6>
               </div>
               <div id="repayLoanDiv" hidden>
                 <a id="repayLoanButton" class="btn btn-success w-50">Repay Loan</a>
@@ -57,11 +57,10 @@
             <div class="card-body">
               <h4 class="card-title fw-bolder">Laptops</h4>
               <select class="form-select" id="laptopDropdownList">
-                <option selected disabled>Select</option>
               </select>
               <div class="card-text pt-2">
                 <h6 class="fw-bolder">Features:</h6>
-                <ul class="fw-lighter card-text">
+                <ul class="card-text">
                     <small id="featureList">
                     </small>
                 </ul>
@@ -85,7 +84,7 @@
               </div>
               <div class="col text-center">
                 <div class="pt-5 pb-5">
-                  <h4 id="laptopPrice">0</h4>
+                  <h4><span id="laptopPrice">0</span><span> kr</span></h4>
                 </div>
                 <div class="pb-3">
                   <a id="buyNowButton" class="btn btn-primary w-50">Buy Now</a>

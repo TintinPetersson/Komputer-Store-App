@@ -4,6 +4,7 @@ const bankButton = document.querySelector("#bankButton");
 const loanButton = document.querySelector("#getALoanButton");
 const repayLoanButton = document.querySelector("#repayLoanButton");
 const dropdownMenu = document.querySelector("#laptopDropdownList");
+const buyNowButton = document.querySelector("#buyNowButton");
 
 let payBalance = document.querySelector("#payBalance");
 let bankBalance = document.querySelector("#bankBalance");
@@ -14,59 +15,86 @@ workButton.addEventListener("click", increasePayBalance);
 bankButton.addEventListener("click", transferWorkMoneyToBank);
 loanButton.addEventListener("click", getALoan);
 repayLoanButton.addEventListener("click", repayLoan);
+buyNowButton.addEventListener("click", buyLaptop);
 
 //Functions
 function increasePayBalance() {
-  payBalance.innerText = new Intl.NumberFormat("sv-SE", { style: "currency", currency: "SEK", })
-    .format(parseInt(payBalance.innerText) + 100);
+  payBalance.innerText = parseInt(payBalance.innerText) + 100;
 }
 function transferWorkMoneyToBank() {
   if(parseInt(loanBalance.innerText) === 0)
   {
-    bankBalance.innerText = new Intl.NumberFormat("sv-SE", { style: "currency", currency: "SEK",})
-      .format(parseInt(payBalance.innerText) + parseInt(bankBalance.innerText));
+    bankBalance.innerText = parseInt(payBalance.innerText) + parseInt(bankBalance.innerText);
     payBalance.innerText = 0;
   }
   else
   {
-    const mandatoryLoanAmount = parseInt(payBalance.innerText) / 10;
+    if(parseInt(loanBalance.innerText) - (parseInt(payBalance.innerText) / 10) <= 0){
 
-    bankBalance.innerText = parseInt(payBalance.innerText) + parseInt(bankBalance.innerText) - mandatoryLoanAmount;
-    loanBalance.innerText = parseInt(loanBalance.innerText) - mandatoryLoanAmount;
+      bankBalance.innerText = (parseInt(bankBalance.innerText) + parseInt(payBalance.innerText)) - parseInt(loanBalance.innerText);
+      loanBalance.innerText = 0;
+      payBalance.innerText = 0;
+      document.querySelector("#hiddenLoan").setAttribute("hidden", "hidden");
+      document.querySelector("#repayLoanDiv").setAttribute("hidden", "hidden");
+    }
+    else{
+      const mandatoryRepayOfLoan = parseInt(payBalance.innerText) / 10;
 
-    payBalance.innerText = 0;
+      bankBalance.innerText = (parseInt(payBalance.innerText) + parseInt(bankBalance.innerText)) - mandatoryRepayOfLoan;
+      loanBalance.innerText = parseInt(loanBalance.innerText) - mandatoryRepayOfLoan;
+  
+      payBalance.innerText = 0;
+    }
   }
-
-  if(parseInt(loanBalance.innerText) === 0)
-  loanBalance.innerText = 0;
-  document.querySelector("#hiddenLoan").setAttribute("hidden", "hidden");
-  document.querySelector("#repayLoanDiv").setAttribute("hidden", "hidden");
-
 }
 function getALoan() {
-  const requestedLoanNumber = Number(window.prompt("Type a number", ""));
+  const requestedLoanNumber = parseInt(window.prompt("Type a number", ""));
 
-  if (parseInt(loanBalance.innerText) === 0 && requestedLoanNumber <= parseInt(bankBalance.innerText) * 2) 
+  if (parseInt(loanBalance.innerText) === 0 && requestedLoanNumber <= parseInt(bankBalance.innerText) * 2 && requestedLoanNumber > 0) 
 {
-    loanBalance.innerText = new Intl.NumberFormat("sv-SE", {style: "currency", currency: "SEK",})
-      .format(requestedLoanNumber);
-
+    loanBalance.innerText = requestedLoanNumber;
+    bankBalance.innerText = parseInt(bankBalance.innerText) + requestedLoanNumber;
     document.querySelector("#hiddenLoan").removeAttribute("hidden");
     document.querySelector("#repayLoanDiv").removeAttribute("hidden");
 
   } else if (parseInt(loanBalance.innerText) > 0) {
-    alert("You already have a loan you need to pay off!");
-  } else {
-    alert("That loan is too large!");
+    alert("You already have a loan you need to pay off.");
+  } else if(requestedLoanNumber < 0) {
+    alert("You can only use positive values.");
+  } else if(isNaN(requestedLoanNumber)){
+    alert("You can only use numbers.")
+  } else{
+    let maxLoan = parseInt(bankBalance.innerText) * 2;
+    alert("That loan is too large. Max amount you can loan is: " + maxLoan)
   }
 }
 function repayLoan(){
-  loanBalance.innerText =  new Intl.NumberFormat("sv-SE", {style: "currency", currency: "SEK",})
-  .format(parseInt(loanBalance.innerText) - parseInt(payBalance.innerText));
+  if(parseInt(loanBalance.innerText) - parseInt(payBalance.innerText) <= 0){
 
+    const repayedLoanBelowZero = parseInt(loanBalance.innerText) - parseInt(payBalance.innerText);
+
+    bankBalance.innerText = parseInt(bankBalance.innerText) + Math.abs(repayedLoanBelowZero);
+    loanBalance.innerText = 0;
+
+    document.querySelector("#hiddenLoan").setAttribute("hidden", "hidden");
+    document.querySelector("#repayLoanDiv").setAttribute("hidden", "hidden");
+  }
+  else{
+    loanBalance.innerText = parseInt(loanBalance.innerText) - parseInt(payBalance.innerText);
+  }
   payBalance.innerText = 0;
+}
+function buyLaptop(){
+  let laptopPrice = document.querySelector("#laptopPrice").innerText.trim();
+  let laptopName = document.querySelector("#laptopName").innerText;
 
-  if(parseInt(loanBalance.innerText) === 0)
-  document.querySelector("#hiddenLoan").setAttribute("hidden", "hidden");
-  document.querySelector("#repayLoanDiv").setAttribute("hidden", "hidden");
+
+  if(parseInt(bankBalance.innerText) >= parseInt(laptopPrice)){
+
+    bankBalance.innerText = parseInt(bankBalance.innerText) - parseInt(laptopPrice);
+
+    alert("Congratulations! You succesfully bought a brand new laptop. \n\n" + laptopName + " is now yours!")
+  }else{
+    alert("You cannot afford that laptop at this time.")
+  }
 }
