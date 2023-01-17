@@ -5,10 +5,9 @@ const loanButton = document.querySelector("#getALoanButton");
 const repayLoanButton = document.querySelector("#repayLoanButton");
 const dropdownMenu = document.querySelector("#laptopDropdownList");
 const buyNowButton = document.querySelector("#buyNowButton");
-
-let payBalance = document.querySelector("#payBalance");
-let bankBalance = document.querySelector("#bankBalance");
-let loanBalance = document.querySelector("#loanBalance");
+const payBalance = document.querySelector("#payBalance");
+const bankBalance = document.querySelector("#bankBalance");
+const loanBalance = document.querySelector("#loanBalance");
 
 //Event listeners
 workButton.addEventListener("click", increasePayBalance);
@@ -64,7 +63,7 @@ function getALoan() {
   } else if(isNaN(requestedLoanNumber)){
     alert("You can only use numbers.")
   } else{
-    let maxLoan = parseInt(bankBalance.innerText) * 2;
+    const maxLoan = parseInt(bankBalance.innerText) * 2;
     alert("That loan is too large. Max amount you can loan is: " + maxLoan)
   }
 }
