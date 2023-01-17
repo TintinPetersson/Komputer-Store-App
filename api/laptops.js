@@ -21,7 +21,7 @@ const addToDropdown = (laptop) => {
   laptopElement.appendChild(document.createTextNode(laptop.title));
   dropdownMenu.appendChild(laptopElement);
 };
-function addSpecsToFeatureList(spec){
+function addSpecsToFeatureList(spec) {
   const featureListElement = document.createElement("li");
   featureListElement.innerText = spec;
   document.querySelector("#featureList").append(featureListElement);
@@ -38,22 +38,22 @@ function onDropdownChange() {
 
   //Fetch picture and change url from jpg to png, and vice versa, if needed.
   fetch("https://hickory-quilled-actress.glitch.me/" + laptops[value].image, { method: "HEAD" })
-  .then(res => {
-    if (res.ok) 
-      document.querySelector("#laptopImage").src = "https://hickory-quilled-actress.glitch.me/"+ laptops[value].image;
-    else {
+    .then(res => {
+      if (res.ok)
+        document.querySelector("#laptopImage").src = "https://hickory-quilled-actress.glitch.me/" + laptops[value].image;
+      else {
 
-      if(laptops[value].image.includes(".jpg")){
-        laptops[value].image = laptops[value].image.replace(".jpg", ".png")
-        document.querySelector("#laptopImage").src = "https://hickory-quilled-actress.glitch.me/"+ laptops[value].image;
+        if (laptops[value].image.includes(".jpg")) {
+          laptops[value].image = laptops[value].image.replace(".jpg", ".png")
+          document.querySelector("#laptopImage").src = "https://hickory-quilled-actress.glitch.me/" + laptops[value].image;
+        }
+        else {
+          laptops[value].image.replace(".png", ".jpg")
+          document.querySelector("#laptopImage").src = "https://hickory-quilled-actress.glitch.me/" + laptops[value].image;
+        }
       }
-      else{
-        laptops[value].image.replace(".png", ".jpg")
-        document.querySelector("#laptopImage").src = "https://hickory-quilled-actress.glitch.me/"+ laptops[value].image;
-      }
-    }
-  })
-  .catch(err => console.log('Error:', err))
+    })
+    .catch(err => console.log('Error:', err))
 }
 
 laptops.forEach((c) => addToDropdown(c));

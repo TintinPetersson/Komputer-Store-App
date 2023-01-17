@@ -21,14 +21,12 @@ function increasePayBalance() {
   payBalance.innerText = parseInt(payBalance.innerText) + 100;
 }
 function transferWorkMoneyToBank() {
-  if(parseInt(loanBalance.innerText) === 0)
-  {
+  if (parseInt(loanBalance.innerText) === 0) {
     bankBalance.innerText = parseInt(payBalance.innerText) + parseInt(bankBalance.innerText);
     payBalance.innerText = 0;
   }
-  else
-  {
-    if(parseInt(loanBalance.innerText) - (parseInt(payBalance.innerText) / 10) <= 0){
+  else {
+    if (parseInt(loanBalance.innerText) - (parseInt(payBalance.innerText) / 10) <= 0) {
 
       bankBalance.innerText = (parseInt(bankBalance.innerText) + parseInt(payBalance.innerText)) - parseInt(loanBalance.innerText);
       loanBalance.innerText = 0;
@@ -36,12 +34,12 @@ function transferWorkMoneyToBank() {
       document.querySelector("#hiddenLoan").setAttribute("hidden", "hidden");
       document.querySelector("#repayLoanDiv").setAttribute("hidden", "hidden");
     }
-    else{
+    else {
       const mandatoryRepayOfLoan = parseInt(payBalance.innerText) / 10;
 
       bankBalance.innerText = (parseInt(payBalance.innerText) + parseInt(bankBalance.innerText)) - mandatoryRepayOfLoan;
       loanBalance.innerText = parseInt(loanBalance.innerText) - mandatoryRepayOfLoan;
-  
+
       payBalance.innerText = 0;
     }
   }
@@ -49,8 +47,7 @@ function transferWorkMoneyToBank() {
 function getALoan() {
   const requestedLoanNumber = parseInt(window.prompt("Type a number", ""));
 
-  if (parseInt(loanBalance.innerText) === 0 && requestedLoanNumber <= parseInt(bankBalance.innerText) * 2 && requestedLoanNumber > 0) 
-{
+  if (parseInt(loanBalance.innerText) === 0 && requestedLoanNumber <= parseInt(bankBalance.innerText) * 2 && requestedLoanNumber > 0) {
     loanBalance.innerText = requestedLoanNumber;
     bankBalance.innerText = parseInt(bankBalance.innerText) + requestedLoanNumber;
     document.querySelector("#hiddenLoan").removeAttribute("hidden");
@@ -58,17 +55,17 @@ function getALoan() {
 
   } else if (parseInt(loanBalance.innerText) > 0) {
     alert("You already have a loan you need to pay off.");
-  } else if(requestedLoanNumber < 0) {
+  } else if (requestedLoanNumber < 0) {
     alert("You can only use positive values.");
-  } else if(isNaN(requestedLoanNumber)){
+  } else if (isNaN(requestedLoanNumber)) {
     alert("You can only use numbers.")
-  } else{
+  } else {
     const maxLoan = parseInt(bankBalance.innerText) * 2;
     alert("That loan is too large. Max amount you can loan is: " + maxLoan)
   }
 }
-function repayLoan(){
-  if(parseInt(loanBalance.innerText) - parseInt(payBalance.innerText) <= 0){
+function repayLoan() {
+  if (parseInt(loanBalance.innerText) - parseInt(payBalance.innerText) <= 0) {
 
     const repayedLoanBelowZero = parseInt(loanBalance.innerText) - parseInt(payBalance.innerText);
 
@@ -78,22 +75,22 @@ function repayLoan(){
     document.querySelector("#hiddenLoan").setAttribute("hidden", "hidden");
     document.querySelector("#repayLoanDiv").setAttribute("hidden", "hidden");
   }
-  else{
+  else {
     loanBalance.innerText = parseInt(loanBalance.innerText) - parseInt(payBalance.innerText);
   }
   payBalance.innerText = 0;
 }
-function buyLaptop(){
+function buyLaptop() {
   const laptopPrice = document.querySelector("#laptopPrice").innerText;
   const laptopName = document.querySelector("#laptopName").innerText;
 
-  
-  if(parseInt(bankBalance.innerText) >= parseInt(laptopPrice)){
+
+  if (parseInt(bankBalance.innerText) >= parseInt(laptopPrice)) {
 
     bankBalance.innerText = parseInt(bankBalance.innerText) - parseInt(laptopPrice);
 
     alert("Congratulations!\n\nYou succesfully bought a new laptop. \n\n" + laptopName + " is now yours!")
-  }else{
+  } else {
     alert("You cannot afford that laptop at this time.\n\n You need: " + (parseInt(laptopPrice) - parseInt(bankBalance.innerText)) + " kr more.")
   }
 }
